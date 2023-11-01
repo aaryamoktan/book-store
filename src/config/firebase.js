@@ -1,7 +1,9 @@
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {getAuth} from "firebase/auth"
+import {getAuth,GoogleAuthProvider,FacebookAuthProvider} from "firebase/auth"
+import {getFirestore} from "firebase/firestore"
+
 const firebaseConfig = {
   apiKey: "AIzaSyAinOAFLOHf0iTz_7KTXNOC7ADRqsjX8to",
   authDomain: "book-store-8d7a0.firebaseapp.com",
@@ -15,3 +17,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
  export const auth = getAuth(app)
+ export const prov = new GoogleAuthProvider()
+ export const db = getFirestore(app);
