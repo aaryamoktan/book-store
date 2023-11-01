@@ -1,8 +1,8 @@
 import React from 'react'
-
+import { Auth } from './component/Auth'
 const Home = () => {
   return (
-    <div>Home</div>
+    <div><Auth/></div>
   )
 }
 
