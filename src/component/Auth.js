@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import {auth,prov,db} from "../config/firebase"
-import { getDocs,collection,addDoc,deleteDoc,doc } from "firebase/firestore"
+import { getDocs,collection,addDoc,deleteDoc,doc,updateDoc } from "firebase/firestore"
 import {createUserWithEmailAndPassword, signInWithPopup,signOut,} from "firebase/auth"
 export const Auth = ()=>
 {
@@ -9,6 +9,7 @@ export const Auth = ()=>
     const [releasedate,setreleasedate] =useState()
     const [bestseller,setbestseller] =useState(false)
     const [email,setemail] = useState();
+    const [updatetitle,setupdatebooktitle] = useState();
     const [password,setpassword] = useState();
     const collectionref = collection(db,"bookstore")
     const sign =async()=>
@@ -31,14 +32,12 @@ export const Auth = ()=>
         catch(err)
         {
             console.log(err)
-        }
-        
+        }  
     }
     const deletebook = async(id)=>
     {
         try{
              await deleteDoc(doc(db,"bookstore",id))
-             
              getbooklist()
         }
         catch(err)
@@ -46,16 +45,25 @@ export const Auth = ()=>
             console.log(err)
         }
     }
-    
+    const updatebook  = async(id)=>
+    {
+        try{
+            await updateDoc(doc(db,"bookstore",id),{title:updatetitle})
+            getbooklist();
+        }
+        catch(err)
+        {
+            console.log(err)
+        }
+    }
         useEffect(()=>
     {
-      
     getbooklist()
     },[])
     const submit = async()=>
     {
         try{
-            await addDoc(collectionref,{title:booktitle,date:releasedate,Best_Seller:bestseller});
+            await addDoc(collectionref,{title:booktitle,date:releasedate,Best_Seller:bestseller,userId:auth?.currentUser?.uid});
             getbooklist()
         }
         catch(err)
@@ -111,6 +119,8 @@ export const Auth = ()=>
                                 <td>{title}</td>
                                 <td>{date}</td>
                                 <td><button onClick={()=>deletebook(id)}> delete</button></td>
+                                <input type="text" onChange={(e)=>setupdatebooktitle(e.target.value)}/>
+                                <td><button onClick={()=>updatebook(id)}> update</button></td>
                                 
                             </tr>
 
